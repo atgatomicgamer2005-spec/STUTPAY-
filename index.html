@@ -182,8 +182,7 @@ const REAL_IMGS={
 const DEF_SPOTS=["Main library entrance (busy, well lit)","Campus security post / main gate","Students’ centre or SRC building","Main canteen / food court area"];
 const $=s=>document.querySelector(s),esc=t=>String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const mem={};
-const db={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return k in mem?mem[k]:d}},set(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
-const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("s");setTimeout(()=>t.classList.remove("s"),2600)};
+const db = { get(k){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):null }catch(e){ return null } }, set(k,v){ localStorage.setItem(k, JSON.stringify(v)); try{ if(window._fdb){ const {doc,setDoc} = window._ftools; setDoc(doc(window._fdb, "stutpay", k), {data: JSON.stringify(v)}); } }catch(e){} } };const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("s");setTimeout(()=>t.classList.remove("s"),2600)};
 async function sha(t){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch{return btoa(t)}}
 const phone=p=>{p=String(p).replace(/\D/g,"");if(p.startsWith("0"))p="233"+p.slice(1);return p};
 const wa=(l)=>`https://wa.me/${l.phone}?text=${encodeURIComponent(`Hi ${l.seller}, I saw "${l.title}" (GH₵${l.price}) on STUTPAY. Is it still available?`)}`;
