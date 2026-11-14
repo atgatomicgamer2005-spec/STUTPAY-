@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>STUTPAY – Campus Marketplace</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b1020;--card:#141b34;--line:#243056;--tx:#eef2ff;--mu:#93a0c8;--g:#18c26a;--y:#fcd116;--r:#ce1126;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
+button,input,select,textarea{font:inherit;color:inherit}
+.hide{display:none!important}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--g),#0e9f55);color:#04140a;transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px #18c26a55}
+.btn.alt{background:#1d2748;color:var(--tx)}.btn.wa{background:#25d366}
+input,select,textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#0e1530;margin:6px 0 12px;outline:0}
+input:focus,select:focus,textarea:focus{border-color:var(--g)}
+label{font-size:13px;color:var(--mu)}
+#auth{min-height:100vh;display:grid;place-items:center;padding:20px;position:relative;overflow:hidden}
+#bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55}
+.bg{position:absolute;inset:0;background:linear-gradient(120deg,#07122e,#0b3b2a,#2a0a14,#07122e);background-size:300% 300%;animation:mv 14s ease infinite}
+.orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5;animation:fl 9s ease-in-out infinite}
+@keyframes mv{50%{background-position:100% 50%}}@keyframes fl{50%{transform:translate(40px,-50px) scale(1.2)}}
+.box{position:relative;width:min(430px,100%);background:#0b1020c9;backdrop-filter:blur(18px);border:1px solid #ffffff25;border-radius:24px;padding:30px;animation:up .6s}
+@keyframes up{from{opacity:0;transform:translateY(24px)}}
+.logo{font-weight:800;font-size:32px;letter-spacing:1px}.logo b{color:var(--g)}.logo i{font-style:normal;color:var(--y)}
+.tabs{display:flex;gap:6px;background:#0e1530;padding:5px;border-radius:14px;margin:18px 0}
+.tabs button{flex:1;border:0;background:0;padding:10px;border-radius:10px;cursor:pointer;color:var(--mu);font-weight:700}
+.tabs .on{background:var(--g);color:#04140a}
+.err{color:#ff7b8a;font-size:13px;min-height:18px}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;display:flex;align-items:center;gap:14px;padding:12px 20px;background:#0b1020ee;backdrop-filter:blur(12px);border-bottom:1px solid var(--line);flex-wrap:wrap}
+nav .logo{font-size:22px}.sp{flex:1}
+.pill{background:#1d2748;border-radius:99px;padding:6px 12px;font-size:12px;font-weight:700;color:var(--y)}
+.nt{display:flex;gap:4px;flex-wrap:wrap}.nt button{border:0;background:0;color:var(--mu);padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+.nt .on,.nt button:hover{background:#1d2748;color:var(--tx)}
+main{max-width:1100px;margin:auto;padding:24px 18px 60px}
+.hero{border-radius:22px;padding:34px;background:linear-gradient(135deg,#0e9f55,#0b3b6b 60%,#6a0f1e);margin-bottom:22px}
+.hero h1{margin:0 0 6px;font-size:clamp(24px,4vw,38px)}.hero p{margin:0;opacity:.9}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px}.bar input,.bar select{flex:1;min-width:150px;margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.25s;animation:up .5s}
+.card:hover{transform:translateY(-6px);border-color:var(--g);box-shadow:0 14px 34px #0008}
+.img{height:170px;display:grid;place-items:center;font-size:54px;background:linear-gradient(135deg,#1d2748,#0e9f5540);background-size:cover;background-position:center}
+.cb{padding:14px}.cb h3{margin:0 0 4px;font-size:16px}.price{color:var(--y);font-weight:800;font-size:20px}
+.mu{color:var(--mu);font-size:13px}.tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:99px;background:#18c26a22;color:var(--g);font-weight:700;margin-right:4px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;max-width:620px}
+.spot{display:flex;gap:12px;padding:14px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:var(--card)}
+.spot span{font-size:26px}
+.vb{padding:12px;border-radius:12px;margin-bottom:14px;font-weight:700}
+.ok{background:#18c26a22;color:var(--g)}.pen{background:#fcd11622;color:var(--y)}.no{background:#ce112622;color:#ff7b8a}
+#toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--g);color:#04140a;padding:12px 20px;border-radius:12px;font-weight:700;z-index:9;opacity:0;pointer-events:none;transition:.3s}
+#toast.s{opacity:1}
+#cam{position:fixed;inset:0;z-index:20;background:#000d;display:grid;place-items:center;padding:16px}
+.cm{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:20px;width:min(420px,100%);text-align:center}
+.vw{position:relative;width:min(300px,100%);aspect-ratio:1;margin:12px auto;border-radius:50%;background:#000}
+.vw video{width:100%;height:100%;object-fit:cover;border-radius:50%;transform:scaleX(-1)}
+.ring{position:absolute;inset:-6px;border-radius:50%;border:4px dashed #fff;animation:rot 8s linear infinite}
+.ring.good{border:4px solid var(--g)}.ring.bad{border:4px solid var(--r)}
+@keyframes rot{to{transform:rotate(360deg)}}
+.ins{font-weight:800;min-height:48px;margin:8px 0}.prog{display:flex;gap:8px;justify-content:center;margin-bottom:12px}.prog i{width:34px;height:6px;border-radius:9px;background:#243056}.prog i.d{background:var(--g)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;color:var(--mu);font-size:13px}.stat b{font-size:28px;color:var(--y);display:block}
+.rq{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:16px}.ims{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.ims figure{margin:0;width:150px}.ims img{width:100%;border-radius:10px;border:1px solid var(--line);cursor:zoom-in}.ims img.big{position:fixed;inset:5%;width:90%;height:90%;object-fit:contain;z-index:30;background:#000;cursor:zoom-out}.ims figcaption{font-size:11px;color:var(--mu)}
+.hs{position:relative;border-radius:24px;overflow:hidden;margin-bottom:22px;min-height:240px}
+.sd{position:absolute;inset:0;padding:34px;display:flex;flex-direction:column;justify-content:center;gap:8px;opacity:0;transform:translateX(30px);transition:.7s;background:linear-gradient(120deg,hsl(var(--h) 70% 32%),hsl(calc(var(--h) + 50) 70% 16%));background-size:cover;background-position:center}
+.sd.on{opacity:1;transform:none}.sd h1{margin:0;font-size:clamp(24px,4vw,40px)}.sd p{margin:0 0 8px;opacity:.9;max-width:460px}.sd .btn{align-self:flex-start}
+.dots{position:absolute;bottom:14px;left:34px;display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:9px;background:#fff6;transition:.3s}.dots i.on{width:24px;background:#fff}
+.cnt{position:absolute;right:26px;bottom:18px;display:flex;gap:20px;font-size:12px;color:#fffc}.cnt b{display:block;font-size:28px;color:var(--y)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:4px 0 14px}.chip{flex:none;border:1px solid var(--line);background:var(--card);padding:9px 16px;border-radius:99px;cursor:pointer;font-weight:700;color:var(--tx);transition:.2s}
+.chip:hover{border-color:var(--g);transform:translateY(-2px)}.chip.on{background:var(--g);color:#04140a;border-color:var(--g)}
+.sec{margin:22px 0 12px;font-size:20px}.sec .mu{font-size:13px;font-weight:400}
+.strip{display:flex;gap:16px;overflow-x:auto;padding:4px 2px 14px;scroll-snap-type:x mandatory}.strip .card{flex:none;width:220px;scroll-snap-align:start}
+.pc{cursor:pointer;position:relative}.im{position:relative;height:190px;overflow:hidden}
+.art{position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;background-size:cover!important;background-position:center!important;transition:transform .5s}
+.pc:hover .art{transform:scale(1.08)}
+.art span{font-size:68px;filter:drop-shadow(0 10px 14px #0006);animation:bob 4s ease-in-out infinite;position:relative}
+.art i{position:absolute;width:140px;height:140px;border-radius:50%;background:#ffffff14;top:-30px;right:-30px}.art i+i{width:90px;height:90px;top:auto;right:auto;left:-20px;bottom:-20px}
+@keyframes bob{50%{transform:translateY(-8px) rotate(-4deg)}}
+.pc .im::after{content:"👀 Quick view";position:absolute;left:0;right:0;bottom:0;padding:10px;text-align:center;font-weight:700;font-size:13px;background:linear-gradient(transparent,#000b);transform:translateY(100%);transition:.3s}.pc:hover .im::after{transform:none}
+.heart{position:absolute;top:10px;right:10px;width:36px;height:36px;border-radius:50%;border:0;background:#0b1020b3;color:#fff;font-size:18px;cursor:pointer;z-index:2;transition:.2s}
+.heart:hover{transform:scale(1.15)}.heart.on{color:#ff4d6d;animation:pop .35s}@keyframes pop{50%{transform:scale(1.45)}}
+.nw,.so{position:absolute;left:10px;top:10px;padding:4px 10px;border-radius:99px;font-size:11px;z-index:2}.nw{background:var(--y);color:#222}.so{background:var(--r);color:#fff}.sold .art{filter:grayscale(1);opacity:.6}
+.sl{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:13px}.sl .mu{margin-left:auto;font-size:11px}
+.av{width:28px;height:28px;flex:none;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--y));color:#04140a;display:grid;place-items:center;font-weight:800;font-size:12px}.sl em{color:var(--g);font-style:normal}
+.sk{height:320px;background:linear-gradient(90deg,var(--card) 25%,#1d2748 50%,var(--card) 75%);background-size:200%;animation:sh 1.2s infinite}@keyframes sh{to{background-position:-200% 0}}
+#mp{max-width:140px}.empty{grid-column:1/-1;text-align:center;padding:40px;font-size:40px}
+#mod{position:fixed;inset:0;z-index:15;background:#000b;display:grid;place-items:center;padding:14px;animation:fd .25s}@keyframes fd{from{opacity:0}}
+.md{position:relative;background:var(--card);border:1px solid var(--line);border-radius:22px;width:min(880px,100%);max-height:92vh;overflow:auto;display:grid;grid-template-columns:1fr 1fr;animation:up .35s}
+.x{position:absolute;top:12px;right:12px;z-index:3;border:0;width:36px;height:36px;border-radius:50%;background:#0b1020;color:#fff;cursor:pointer}
+.main{position:relative;height:340px;overflow:hidden}.th{display:flex;gap:8px;padding:10px}.th img{width:56px;height:56px;object-fit:cover;border-radius:10px;border:2px solid transparent;cursor:pointer}.th img.on{border-color:var(--g)}
+.inf{padding:24px;display:flex;flex-direction:column;gap:12px}.inf h2{margin:0}.price.big{font-size:32px}.sc{display:flex;gap:12px;align-items:center;background:#0e1530;border-radius:14px;padding:12px}
+.fab{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:6;border-radius:99px;box-shadow:0 10px 30px #18c26a66;padding:14px 22px}
+#pv{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}#pv img{width:72px;height:72px;object-fit:cover;border-radius:12px}
+a.spot{text-decoration:none;color:inherit;align-items:center;transition:.2s}a.spot:hover{transform:translateX(6px);border-color:var(--g)}a.spot em{margin-left:auto;font-style:normal;color:var(--g);font-weight:700;white-space:nowrap}
+@media(max-width:700px){.md{grid-template-columns:1fr}.main{height:240px}.cnt{display:none}}
+#app{background:radial-gradient(900px 500px at 10% -10%,#18c26a22,transparent),radial-gradient(800px 500px at 100% 0,#fcd11616,transparent),var(--bg)}
+#wall{position:absolute;inset:-20% -10%;display:flex;justify-content:center;gap:18px;transform:rotate(-8deg);opacity:.6;pointer-events:none}
+.col{display:flex;flex-direction:column;width:200px;animation:scr linear infinite}@keyframes scr{to{transform:translateY(-50%)}}
+.wc{width:200px;background:#141b34cc;border:1px solid #ffffff22;border-radius:16px;padding:10px;margin-bottom:16px}.wi{height:120px;border-radius:12px;display:grid;place-items:center;margin-bottom:8px;background-size:cover!important;background-position:center!important;position:relative}.wi svg{display:none}.wi::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,#0008);border-radius:12px}.wc b{display:block;font-size:13px}.wc em{font-style:normal;color:var(--g);font-size:11px}
+.shade{position:absolute;inset:0;background:radial-gradient(circle at 50% 50%,#0b102000,#0b1020d0 85%);pointer-events:none}
+.cap{position:absolute;left:5%;bottom:8%;width:min(430px,40%);height:80px}.cap .c{position:absolute;bottom:0;left:0;display:flex;gap:14px;align-items:center;opacity:0;animation:cp 20s infinite;animation-delay:var(--d)}
+.cap svg{width:60px;height:60px;flex:none;background:var(--g);border-radius:16px;padding:10px}.cap h2{margin:0;font-size:24px}.cap p{margin:2px 0 0;color:#cdd6f6;font-size:14px}
+@keyframes cp{0%{opacity:0;transform:translateY(20px)}4%,22%{opacity:1;transform:none}26%,100%{opacity:0;transform:translateY(-14px)}}
+.bub{position:absolute;right:5%;bottom:10%;width:min(300px,28%);display:flex;flex-direction:column;gap:10px}.bub div{padding:12px 16px;border-radius:18px;font-size:14px;opacity:0;animation:bp 10s infinite}
+.b1{background:#fff;color:#111;border-bottom-left-radius:4px}.b2{background:#25d366;color:#04140a;align-self:flex-end;border-bottom-right-radius:4px;animation-delay:2s!important}
+@keyframes bp{0%{opacity:0;transform:scale(.8)}6%,70%{opacity:1;transform:none}80%,100%{opacity:0}}
+.art span svg{width:92px;height:92px;display:block}
+.sd.ad{background-size:cover;background-position:center}.spn{position:absolute;top:12px;right:14px;font-size:10px;letter-spacing:1px;background:#0007;padding:3px 9px;border-radius:99px}
+.dec{position:absolute;right:30px;top:26px;display:flex;gap:14px}.dec svg{width:84px;height:84px;animation:bob 4s ease-in-out infinite}.dec svg:nth-child(2){animation-delay:-1.3s}.dec svg:nth-child(3){animation-delay:-2.6s}
+.adt{grid-column:1/-1;min-height:140px;border-radius:18px;padding:24px;position:relative;overflow:hidden;background:linear-gradient(120deg,hsl(var(--h,200) 70% 30%),hsl(calc(var(--h,200) + 60) 70% 16%));background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:center}
+.adt h3{margin:0;font-size:22px}.adt p{margin:4px 0 0;opacity:.9}.dec2 svg{position:absolute;right:24px;bottom:10px;width:110px;opacity:.85}
+@media(max-width:900px){.cap,.bub,.dec{display:none}}
+.sg{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:22px;align-items:start}.pvw{position:sticky;top:90px}.ck{display:flex;gap:10px;align-items:center;margin-bottom:12px;color:var(--tx);font-size:14px}.ck input{width:auto;margin:0}@media(max-width:800px){.sg{grid-template-columns:1fr}.pvw{position:static}}
+.real-badge{position:absolute;left:10px;bottom:10px;background:#000a;color:#fff;font-size:10px;padding:4px 8px;border-radius:99px;font-weight:700;letter-spacing:.5px;z-index:2}
+.main .art{height:100%;background-size:cover!important;background-position:center!important}
+</style></head><body>
+
+<section id="auth">
+ <video id="bgv" autoplay muted loop playsinline></video>
+ <div class="bg"></div>
+ <div class="orb" style="width:300px;height:300px;background:#18c26a;top:5%;left:8%"></div>
+ <div class="orb" style="width:260px;height:260px;background:#fcd116;bottom:8%;right:10%;animation-delay:-3s"></div>
+ <div class="orb" style="width:240px;height:240px;background:#ce1126;top:50%;left:55%;animation-delay:-6s"></div>
+ <div id="wall"></div><div class="shade"></div>
+ <div class="cap" id="cap"></div>
+ <div class="bub"><div class="b1">Hi! Is the laptop still available?</div><div class="b2">Yes! Let us meet at the library at 12.</div></div>
+ <div class="box">
+  <div class="logo">STUT<b>PAY</b><i>●</i></div>
+  <div class="mu">Buy &amp; sell safely with students at your campus</div>
+  <div class="tabs"><button id="tl" class="on">Log in</button><button id="ts">Sign up</button></div>
+  <div id="fl">
+   <label>Email</label><input id="le" type="email" placeholder="you@school.edu.gh">
+   <label>Password</label><input id="lp" type="password" placeholder="••••••••">
+   <div class="err" id="lerr"></div><button class="btn" style="width:100%" id="lb">Log in</button>
+  </div>
+  <div id="fs" class="hide">
+   <label>Full name</label><input id="sn">
+   <label>University</label><select id="su"></select>
+   <label>WhatsApp number</label><input id="sw" placeholder="024 123 4567">
+   <label>Email</label><input id="se" type="email">
+   <label>Password (min 6 characters)</label><input id="sp" type="password">
+   <div class="err" id="serr"></div><button class="btn" style="width:100%" id="sb">Create account</button>
+  </div>
+ </div>
+</section>
+
+<section id="app" class="hide">
+ <nav><div class="logo">STUT<b>PAY</b><i>●</i></div><span class="pill" id="uniP"></span>
+  <div class="nt" id="nt"><button data-v="market" class="on">Marketplace</button><button data-v="saved">Saved ♥</button><button data-v="sell">Sell</button><button data-v="spots">Safe spots</button><button data-v="me">Profile</button><button data-v="admin" class="hide">Admin</button></div>
+  <div class="sp"></div><button class="btn alt" id="out">Log out</button></nav>
+ <main id="view"></main>
+</section>
+<div id="toast"></div>
+
+<script>
+const VIDEO_SRC="";
+const UNIS=["University of Ghana (Legon)","KNUST","UCC","UEW","UDS","UMaT","UPSA","GIMPA","UHAS","Ashesi University","AAMUSTED","UENR"];
+const CATS=["Electronics","Fashion","Books","Food","Beauty","Hostel items","Services","Other"];
+const ICON={Electronics:"💻",Fashion:"👕",Books:"📚",Food:"🍲",Beauty:"💄","Hostel items":"🛏️",Services:"🛠️",Other:"📦"};
+const REAL_IMGS={
+  phone:"https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=800&q=80",
+  laptop:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80",
+  speaker:"https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800&q=80",
+  earbuds:"https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&q=80",
+  sneaker:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80",
+  jacket:"https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
+  book:"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80",
+  bowl:"https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=800&q=80",
+  scissors:"https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&q=80",
+  fridge:"https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=800&q=80",
+  lamp:"https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=800&q=80",
+  basket:"https://images.unsplash.com/photo-1584589167171-541ce45f1eea?w=800&q=80",
+  doc:"https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&q=80",
+  palette:"https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
+  box:"https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&q=80",
+  pin:"https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&q=80",
+  shield:"https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&q=80",
+  chat:"https://images.unsplash.com/photo-1611606063065-ee7946f0787a?w=800&q=80",
+  tag:"https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80",
+  campus:"https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1200&q=80",
+  students:"https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&q=80",
+  market:"https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1200&q=80"
+};
+const DEF_SPOTS=["Main library entrance (busy, well lit)","Campus security post / main gate","Students’ centre or SRC building","Main canteen / food court area"];
+const $=s=>document.querySelector(s),esc=t=>String(t??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const mem={};
+const db={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return k in mem?mem[k]:d}},set(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+const toast=m=>{const t=$("#toast");t.textContent=m;t.classList.add("s");setTimeout(()=>t.classList.remove("s"),2600)};
+async function sha(t){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(t));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch{return btoa(t)}}
+const phone=p=>{p=String(p).replace(/\D/g,"");if(p.startsWith("0"))p="233"+p.slice(1);return p};
+const wa=(l)=>`https://wa.me/${l.phone}?text=${encodeURIComponent(`Hi ${l.seller}, I saw "${l.title}" (GH₵${l.price}) on STUTPAY. Is it still available?`)}`;
+if(!db.get("sp_listings")){db.set("sp_listings",[
+ {id:1,uni:"UCC",title:"HP Laptop 14\" (8GB RAM)",cat:"Electronics",price:2200,desc:"Neat, lightly used, with charger.",seller:"Kwame",phone:"233241234567",ver:true,img:"https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=800&q=80"},
+ {id:2,uni:"UCC",title:"Jollof & chicken delivery",cat:"Food",price:35,desc:"Hot lunch delivered to hostels daily.",seller:"Abena",phone:"233201234567",ver:true,img:"https://images.unsplash.com/photo-1563379926898-05f4575a45d8?w=800&q=80"},
+ {id:3,uni:"KNUST",title:"Engineering Mathematics textbook",cat:"Books",price:90,desc:"Stroud, 6th edition.",seller:"Yaw",phone:"233271234567",ver:true,img:"https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&q=80"},
+ {id:4,uni:"University of Ghana (Legon)",title:"Braiding & hair styling",cat:"Services",price:120,desc:"Book me for your hall visit.",seller:"Efua",phone:"233551234567",ver:true,img:"https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=800&q=80"}]);}
+const listings=()=>db.get("sp_listings",[]),users=()=>db.get("sp_users",[]);
+(async()=>{const pw=await sha("Admin@2026");if(!users().some(u=>u.role==="admin"))db.set("sp_users",[...users(),{name:"STUTPAY Admin",uni:"Admin",phone:"233000000000",email:"admin@stutpay.com",pw,ver:"approved",role:"admin"}])})();
+let me=db.get("sp_session",null),view="market";
+const fresh=()=>me=users().find(u=>u.email===me?.email)||null;
+if(VIDEO_SRC){const v=$("#bgv");v.src=VIDEO_SRC;v.play().catch(()=>{})}else $("#bgv").remove();
+$("#su").innerHTML='<option value="">Choose your university</option>'+UNIS.map(u=>`<option>${esc(u)}</option>`).join("");
+const mode=l=>{$("#fl").classList.toggle("hide",!l);$("#fs").classList.toggle("hide",l);$("#tl").classList.toggle("on",l);$("#ts").classList.toggle("on",!l)};
+$("#tl").onclick=()=>mode(true);$("#ts").onclick=()=>mode(false);
+$("#sb").onclick=async()=>{
+ const n=$("#sn").value.trim(),u=$("#su").value,w=phone($("#sw").value),e=$("#se").value.trim().toLowerCase(),p=$("#sp").value,er=$("#serr");
+ if(!n||!u||!e||!p)return er.textContent="Please fill in every field.";
+ if(w.length<11)return er.textContent="Enter a valid WhatsApp number.";
+ if(p.length<6)return er.textContent="Password must be at least 6 characters.";
+ if(users().some(x=>x.email===e))return er.textContent="That email already has an account.";
+ db.set("sp_users",[...users(),{name:n,uni:u,phone:w,email:e,pw:await sha(p),ver:"none"}]);
+ start(e);toast("Welcome to STUTPAY, "+n.split(" ")[0]+"!")};
+$("#lb").onclick=async()=>{
+ const e=$("#le").value.trim().toLowerCase(),u=users().find(x=>x.email===e);
+ if(!u||u.pw!==await sha($("#lp").value))return $("#lerr").textContent="Wrong email or password.";
+ start(e)};
+function start(e){me={email:e};db.set("sp_session",me);fresh();$("#auth").classList.add("hide");$("#app").classList.remove("hide");const ad=me.role==="admin";$("#uniP").textContent=ad?"🛡️ Admin":"🎓 "+me.uni;document.querySelectorAll("#nt button").forEach(b=>b.classList.toggle("hide",ad?b.dataset.v!=="admin":b.dataset.v==="admin"));go(ad?"admin":"market")}
+$("#out").onclick=()=>{db.set("sp_session",null);me=null;$("#app").classList.add("hide");$("#auth").classList.remove("hide")};
+$("#nt").onclick=e=>{if(e.target.dataset.v)go(e.target.dataset.v)};
+function go(v){view=v;clearInterval(window._hs);applyBg();$("#view").onclick=null;document.querySelectorAll("#nt button").forEach(b=>b.classList.toggle("on",b.dataset.v===v));
+ ({market,sell,spots,profile:me_,admin:adminV,saved})[v==="me"?"profile":v]();scrollTo(0,0)}
+const SAMPLES=false;
+const FULL={KNUST:"KNUST, Kumasi",UCC:"University of Cape Coast",UEW:"University of Education, Winneba",UDS:"University for Development Studies, Tamale",UMaT:"University of Mines and Technology, Tarkwa",UPSA:"University of Professional Studies, Accra",GIMPA:"GIMPA, Accra",UHAS:"University of Health and Allied Sciences, Ho","Ashesi University":"Ashesi University, Berekuso",AAMUSTED:"AAMUSTED, Kumasi",UENR:"University of Energy and Natural Resources, Sunyani","University of Ghana (Legon)":"University of Ghana, Legon"};
+const TPL=[["📱","iPhone 11 (64GB)","Electronics",2400],["💻","HP Laptop 14 inch","Electronics",2200],["🔊","JBL Bluetooth Speaker","Electronics",180],["🎧","Wireless Earbuds","Electronics",120],["👟","Nike Air Force Sneakers","Fashion",350],["🧥","Vintage Denim Jacket","Fashion",160],["📚","Engineering Mathematics Textbook","Books",90],["🍛","Jollof & Chicken Delivery","Food",35],["💇","Braiding & Hair Styling","Beauty",120],["🧊","Mini Fridge (hostel size)","Hostel items",650],["💡","Rechargeable Study Lamp","Hostel items",55],["🧺","Laundry Pickup Service","Services",40],["📝","Typing & Assignment Help","Services",30],["🎨","Logo & Flyer Design","Services",80]];
+const NAMES=["Kwame","Abena","Yaw","Efua","Kofi","Ama","Nana","Esi"];
+const HUE={Electronics:[210,260],Fashion:[320,20],Books:[40,15],Food:[20,350],Beauty:[300,340],"Hostel items":[170,200],Services:[150,190],Other:[230,270]};
+db.set("sp_listings",listings().filter(l=>!l.demo&&l.id>4));
+const at=l=>l.at||(l.id>1e12?l.id:Date.now()-l.id*72e5);
+const ago=t=>{const m=(Date.now()-t)/6e4;return m<60?Math.max(1,m|0)+"m ago":m<1440?(m/60|0)+"h ago":(m/1440|0)+"d ago"};
+const visible=()=>listings().filter(l=>l.uni===me.uni&&(SAMPLES||!l.demo));
+const photos=l=>l.imgs&&l.imgs.length?l.imgs:(l.img?[l.img]:[]);
+const art=l=>{const key=KIND[l.emoji]||CATK[l.cat]||"box";const img=REAL_IMGS[key]||REAL_IMGS.box;return `<div class="art" style="background-image:url(${img})"><span class="real-badge">REAL PHOTO</span></div>`};
+const pic=l=>photos(l)[0]?`<div class="art" style="background-image:url(${photos(l)[0]})"></div>`:art(l);
+const favs=()=>db.get("sp_fav_"+me.email,[]);
+const toggleFav=id=>{const f=favs();db.set("sp_fav_"+me.email,f.includes(id)?f.filter(x=>x!==id):[...f,id])};
+const chat=l=>l.demo?'<button class="btn wa" style="width:100%" data-demo>💬 Chat on WhatsApp</button>':`<a href="${wa(l)}" target="_blank" rel="noopener"><button class="btn wa" style="width:100%">💬 Chat on WhatsApp</button></a>`;
+function card(l,i){const f=favs().includes(l.id),nw=Date.now()-at(l)<864e5;
+ return `<div class="card pc ${l.sold?"sold":""}" data-o="${l.id}" style="animation-delay:${Math.min(i,12)*50}ms"><div class="im">${pic(l)}<button class="heart ${f?"on":""}" data-f="${l.id}" aria-label="Save">${f?"♥":"♡"}</button>${nw?'<b class="nw">NEW</b>':""}${l.sold?'<b class="so">SOLD</b>':""}</div>
+ <div class="cb"><span class="tag">${esc(l.cat)}</span>${l.cond?`<span class="tag">${esc(l.cond)}</span>`:""}<h3>${esc(l.title)}</h3><div class="price">GH₵ ${esc(l.price)}</div>
+ <div class="sl"><span class="av">${esc((l.seller||"?")[0])}</span><span>${esc(l.seller)} ${l.ver?'<em title="Verified">✔</em>':""}</span><span class="mu">👁 ${l.views||0} · ${ago(at(l))}</span></div></div></div>`}
+function openL(id){
+ db.set("sp_listings",listings().map(x=>x.id===id?{...x,views:(x.views||0)+1}:x));
+ const l=listings().find(x=>x.id===id);if(!l)return;const P=photos(l);let cur=0;
+ const m=document.createElement("div");m.id="mod";document.body.appendChild(m);
+ const paint=()=>{m.innerHTML=`<div class="md"><button class="x" data-x>✕</button><div><div class="main">${P.length?`<div class="art" style="background-image:url(${P[cur]})"></div>`:art(l)}</div>${P.length>1?`<div class="th">${P.map((p,j)=>`<img src="${p}" class="${j===cur?"on":""}" data-t="${j}">`).join("")}</div>`:""}</div>
+ <div class="inf"><div><span class="tag">${esc(l.cat)}</span>${l.ver?'<span class="tag">✔ Verified seller</span>':""}${l.sold?'<span class="tag">Sold</span>':""}${l.cond?`<span class="tag">${esc(l.cond)}</span>`:""}${l.neg?'<span class="tag">Negotiable</span>':""}${l.deliv?'<span class="tag">Delivers on campus</span>':""}</div><h2>${esc(l.title)}</h2><div class="price big">GH₵ ${esc(l.price)}</div><p class="mu" style="font-size:14px">${esc(l.desc||"No description.")}</p>${l.qty>1?`<p class="mu">Quantity available: <b>${l.qty}</b></p>`:""}${l.spot?`<a class="mu" href="${mapLink(l)}" target="_blank" rel="noopener">📍 Preferred meet-up: <b>${esc(l.spot)}</b> · directions ↗</a>`:""}
+ <div class="sc"><span class="av">${esc((l.seller||"?")[0])}</span><div><b>${esc(l.seller)}</b><div class="mu">${esc(l.uni)} student · 👁 ${l.views||0} views · ${ago(at(l))}</div></div></div>
+ ${chat(l)}<button class="btn alt" data-sp>📍 Safe meet-up spots</button><button class="btn alt" data-sh>🔗 Share</button></div></div>`};
+ m.onclick=e=>{const t=e.target;if(t===m||t.dataset.x!==undefined)return m.remove();
+  if(t.dataset.t){cur=+t.dataset.t;return paint()}
+  if(t.dataset.demo!==undefined)return toast("This is a sample listing, so there is no real seller to chat with.");
+  if(t.dataset.sp!==undefined){m.remove();return go("spots")}
+  if(t.dataset.sh!==undefined){const s=`${l.title} – GH₵${l.price} on STUTPAY`;try{navigator.clipboard.writeText(s).then(()=>toast("Copied, ready to share"),()=>toast(s))}catch{toast(s)}}};
+ paint()}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")document.getElementById("mod")?.remove()});
+const shopClick=refresh=>e=>{const t=e.target.closest("[data-f],[data-o],[data-c],[data-go]");if(!t)return;
+ if(t.dataset.f){toggleFav(+t.dataset.f);return refresh()}
+ if(t.dataset.go){const g=t.dataset.go;return g==="#g"?$("#g").scrollIntoView({behavior:"smooth"}):go(g)}
+ if(t.dataset.c!==undefined){cat=t.dataset.c;document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c.dataset.c===cat));return refresh(1)}
+ if(t.dataset.o)openL(+t.dataset.o)};
+let cat="";
+function market(){
+ const V=visible(),sellers=new Set(V.map(l=>l.seller+l.phone)).size;
+ const SL=[
+  [`Shop ${me.uni} 🎓`,"Buy and sell with verified students on your campus.","Start shopping","#g",150,REAL_IMGS.campus],
+  ["Sell in minutes 💸","Verify once, then post unlimited items and services.","Start selling","sell",215,REAL_IMGS.market],
+  ["Meet safely 🛡️","Pick a trusted public spot with Google Maps directions.","See safe spots","spots",340,REAL_IMGS.students]
+ ];
+ const AD=db.get("sp_ads",[]),DK=[["phone","laptop","sneaker"],["doc","palette","book"],["pin","shield","chat"]];
+ const SH=[...AD.map(a=>`<div class="sd ad" style="background-image:linear-gradient(90deg,#0b1020e6 15%,#0b102033),url(${a.img})"><span class="spn">Sponsored</span><h1>${esc(a.title)}</h1><p>${esc(a.sub||"")}</p><button class="btn" data-go="#g">Shop now</button></div>`),...SL.map((s,i)=>`<div class="sd" style="--h:${s[4]};background-image:linear-gradient(90deg,#0b1020e6 10%,#0b102033),url(${s[5]})"><h1>${s[0]}</h1><p>${s[1]}</p><button class="btn" data-go="${s[3]}">${s[2]}</button></div>`)];
+ SH[0]=SH[0].replace('class="sd','class="sd on');
+ $("#view").innerHTML=`<div class="hs">${SH.join("")}
+ <div class="dots">${SH.map((_,i)=>`<i class="${i?"":"on"}"></i>`).join("")}</div><div class="cnt"><div><b data-n="${V.length}">0</b>Listings</div><div><b data-n="${sellers}">0</b>Sellers</div></div></div>
+ <div class="chips">${["",...CATS].map(c=>`<button class="chip ${c===cat?"on":""}" data-c="${esc(c)}">${c?ICON[c]+" "+c:"✨ All"}</button>`).join("")}</div>
+ <div class="bar"><input id="q" placeholder="🔍 Search items or services…"><select id="so"><option value="new">Newest</option><option value="pop">Most viewed</option><option value="lo">Price: low to high</option><option value="hi">Price: high to low</option></select><input id="mp" type="number" min="0" placeholder="Max GH₵"></div>
+ <h2 class="sec" id="th">🔥 Trending on campus</h2><div class="strip" id="st"></div>
+ <h2 class="sec">All items <span class="mu" id="rc"></span></h2><div class="grid" id="g">${'<div class="card sk"></div>'.repeat(8)}</div>
+ <button class="btn fab" data-go="sell">＋ Sell</button>`;
+ const draw=()=>{const q=$("#q").value.toLowerCase(),mp=parseFloat($("#mp").value),so=$("#so").value;
+  let L=visible().filter(l=>(!cat||l.cat===cat)&&(l.title+l.desc+l.cat).toLowerCase().includes(q)&&(isNaN(mp)||l.price<=mp));
+  L.sort(so==="lo"?(a,b)=>a.price-b.price:so==="hi"?(a,b)=>b.price-a.price:so==="pop"?(a,b)=>(b.views||0)-(a.views||0):(a,b)=>at(b)-at(a));
+  $("#rc").textContent="· "+L.length+" found";
+  $("#g").innerHTML=L.length?adMix(L):(visible().length?'<div class="empty">🔍<h3>No matches</h3><p class="mu" style="font-size:14px">Try another category or search.</p></div>':'<div class="empty">🛍️<h3>No listings yet at '+esc(me.uni)+'</h3><p class="mu" style="font-size:14px">Be the first to post something for your campus.</p><button class="btn" data-go="sell">Post a listing</button></div>');
+  $("#st").innerHTML=[...visible()].filter(l=>!l.sold).sort((a,b)=>(b.views||0)-(a.views||0)).slice(0,8).map(card).join("");const h=!$("#st").innerHTML;$("#st").style.display=$("#th").style.display=h?"none":""};
+ const refresh=()=>draw();
+ $("#q").oninput=draw;$("#so").onchange=draw;$("#mp").oninput=draw;
+ $("#view").onclick=shopClick(refresh);setTimeout(()=>{if($("#g"))draw()},450);
+ document.querySelectorAll("[data-n]").forEach(b=>{const n=+b.dataset.n;let s=null;const f=t=>{s=s??t;const p=Math.min(1,(t-s)/900);b.textContent=Math.round(n*p);if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)});
+ let i=0;window._hs=setInterval(()=>{const S=document.querySelectorAll(".sd"),D=document.querySelectorAll(".dots i");if(!S.length)return clearInterval(window._hs);S[i].classList.remove("on");D[i].classList.remove("on");i=(i+1)%S.length;S[i].classList.add("on");D[i].classList.add("on")},5000)}
+function saved(){const F=favs(),L=visible().filter(l=>F.includes(l.id));
+ $("#view").innerHTML=`<div class="hero"><h1>Saved items ♥</h1><p>Your wishlist at ${esc(me.uni)}.</p></div><div class="grid">${L.length?L.map(card).join(""):'<div class="empty">♡<h3>Nothing saved yet</h3><p class="mu" style="font-size:14px">Tap the heart on any item to save it.</p><button class="btn" data-go="market">Browse marketplace</button></div>'}</div>`;
+ $("#view").onclick=shopClick(saved)}
+const CONDS=["Brand new","Like new","Used – good","Used – fair"];
+const mapLink=l=>{const s=(SPOTS[l.uni]||D3(l.uni)).find(x=>x[0]===l.spot);return s?`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s[1])}`:""};
+function sell(){
+ if(me.ver!=="approved"){$("#view").innerHTML=`<div class="panel"><h2>Become a seller</h2><p class="mu">To keep STUTPAY safe, sellers must verify their identity first. Your Ghana Card and selfie stay private and are never shown to the public.</p><button class="btn" onclick="go('me')">Verify my identity</button></div>`;return}
+ let imgs=[],type="Product";const S=SPOTS[me.uni]||D3(me.uni);
+ $("#view").innerHTML=`<div class="sg"><div class="panel" style="max-width:none"><h2>Post a listing</h2><p class="mu">Fill in the details below. Only students at ${esc(me.uni)} will see it.</p>
+ <label>What are you posting?</label><div class="chips" id="ty"><button class="chip on" data-ty="Product" type="button">📦 Product</button><button class="chip" data-ty="Service" type="button">🛠️ Service</button></div>
+ <label>Title *</label><input id="t" maxlength="60" placeholder="e.g. Nike Air Force sneakers, size 42">
+ <label>Category *</label><select id="k">${CATS.map(c=>`<option>${c}</option>`).join("")}</select>
+ <div id="cw"><label>Condition *</label><select id="cd">${CONDS.map(c=>`<option>${c}</option>`).join("")}</select><label>Quantity available</label><input id="qy" type="number" min="1" value="1"></div>
+ <label>Price (GH₵) *</label><input id="p" type="number" min="0" placeholder="0"><label class="ck"><input id="ng" type="checkbox"> Price is negotiable</label>
+ <label>Description *</label><textarea id="d" rows="4" maxlength="500" placeholder="Brand, size, how long you used it, any faults…"></textarea>
+ <label>Photos (up to 4). Clear, real photos sell faster *</label><input id="f" type="file" accept="image/*" multiple><div id="pv"></div>
+ <label>Preferred safe meet-up spot</label><select id="sp3"><option value="">Flexible, we will agree in chat</option>${S.map(s=>`<option>${esc(s[0])}</option>`).join("")}</select>
+ <label class="ck"><input id="dl" type="checkbox"> I can deliver on campus</label>
+ <label>WhatsApp number buyers will use *</label><input id="wn" value="${esc(me.phone.replace(/^233/,"0"))}">
+ <label class="ck"><input id="ok" type="checkbox"> I confirm I own this item or service and it is legal to sell</label>
+ <div class="err" id="e"></div><button class="btn" id="go" style="width:100%">Publish listing</button></div>
+ <div class="pvw"><b>Live preview</b><p class="mu" style="font-size:12px">This is how buyers will see your listing.</p><div id="pc"></div></div></div>`;
+ const cur=()=>({id:0,uni:me.uni,title:$("#t").value.trim()||"Your title here",cat:$("#k").value,price:$("#p").value||0,desc:$("#d").value,seller:me.name.split(" ")[0],ver:true,imgs,views:0,at:Date.now(),cond:type==="Service"?"":$("#cd").value,neg:$("#ng").checked});
+ const prev=()=>{$("#pc").innerHTML=card(cur(),0)};
+ document.querySelectorAll("#view input,#view select,#view textarea").forEach(x=>{x.addEventListener("input",prev);x.addEventListener("change",prev)});
+ $("#ty").onclick=e=>{const t=e.target.dataset.ty;if(!t)return;type=t;document.querySelectorAll("#ty .chip").forEach(c=>c.classList.toggle("on",c.dataset.ty===t));$("#cw").style.display=t==="Service"?"none":"";$("#k").value=t==="Service"?"Services":($("#k").value==="Services"?"Electronics":$("#k").value);prev()};
+ $("#f").onchange=async e=>{imgs=[];for(const f of[...e.target.files].slice(0,4))imgs.push(await shrink(f,640));$("#pv").innerHTML=imgs.map(s=>`<img src="${s}">`).join("");prev()};
+ $("#go").onclick=()=>{const t=$("#t").value.trim(),p=$("#p").value,d=$("#d").value.trim(),w=phone($("#wn").value),er=$("#e");
+  if(!t||!d||p==="")return er.textContent="Please fill in the title, price and description.";
+  if(type==="Product"&&!imgs.length)return er.textContent="Add at least one real photo of the product.";
+  if(w.length<11)return er.textContent="Enter a valid WhatsApp number.";
+  if(!$("#ok").checked)return er.textContent="Please confirm you own the item or service.";
+  db.set("sp_listings",[{id:Date.now(),at:Date.now(),uni:me.uni,type,title:t,cat:$("#k").value,price:+p,desc:d,cond:type==="Service"?"":$("#cd").value,qty:type==="Service"?0:(+$("#qy").value||1),neg:$("#ng").checked,deliv:$("#dl").checked,spot:$("#sp3").value,seller:me.name.split(" ")[0],phone:w,ver:true,imgs,owner:me.email,views:0},...listings()]);
+  toast("Your listing is live!");go("market")};
+ prev()}
+function shrink(f,m){return new Promise(r=>{const i=new Image;i.onload=()=>{const s=Math.min(1,(m||480)/i.width),c=document.createElement("canvas");c.width=i.width*s;c.height=i.height*s;c.getContext("2d").drawImage(i,0,0,c.width,c.height);r(c.toDataURL("image/jpeg",.7))};i.onerror=()=>r("");i.src=URL.createObjectURL(f)})}
+const D3=u=>[["Main Library",`Main Library, ${FULL[u]||u}, Ghana`],["Main Gate",`Main Gate, ${FULL[u]||u}, Ghana`],["Campus Security Post",`Campus security office, ${FULL[u]||u}, Ghana`]];
+const SPOTS={"University of Ghana (Legon)":[["Balme Library","Balme Library, University of Ghana, Legon"],["Great Hall","Great Hall, University of Ghana, Legon"],["Main Gate","University of Ghana main gate, Legon"],["Campus Police Station","University of Ghana Police Station, Legon"]],
+ KNUST:[["Main Library","KNUST Main Library, Kumasi"],["Commercial Area","Commercial Area, KNUST, Kumasi"],["Great Hall","Great Hall, KNUST, Kumasi"],["Main Gate","KNUST main gate, Kumasi"]],
+ UCC:[["Sam Jonah Library","Sam Jonah Library, University of Cape Coast"],["Main Gate","University of Cape Coast main gate"],["Campus Security Post","University of Cape Coast security, Cape Coast"]]};
+function spots(){
+ const S=SPOTS[me.uni]||D3(me.uni);
+ $("#view").innerHTML=`<div class="hero"><h1>Safe meet-up spots 🛡️</h1><p>${esc(me.uni)}: tap a spot to open Google Maps with directions.</p></div>
+ ${S.map(s=>`<a class="spot" href="https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s[1])}" target="_blank" rel="noopener"><span>📍</span><div><b>${esc(s[0])}</b><div class="mu">Busy public area · tap for directions</div></div><em>Directions ↗</em></a>`).join("")}
+ <div class="panel" style="margin-top:18px"><b>Stay safe</b><p class="mu" style="font-size:14px;line-height:1.7">• Meet in daylight and in public<br>• Bring a friend and tell someone where you are going<br>• Inspect the item before you pay<br>• Never share your Ghana Card or PIN with a buyer or seller<br>• Only trade with verified sellers (look for ✔)</p></div>`}
+function me_(){const v=me.ver,st={none:["no","Not verified – required to sell."],pending:["pen","⏳ Verification pending review."],approved:["ok","✔ Verified seller"],rejected:["no","✖ Rejected: "+esc(me.reason||"please resubmit clear photos.")]}[v];
+ $("#view").innerHTML=`<div class="panel"><h2>${esc(me.name)}</h2><p class="mu">${esc(me.email)} · ${esc(me.uni)} · +${esc(me.phone)}</p>
+ <div class="vb ${st[0]}">${st[1]}</div>
+ ${v==="none"||v==="rejected"?`<h3>Seller verification</h3><p class="mu">🔒 Private: these images are used only to confirm your identity and are never shown on your profile or listings.</p>
+ <label>Ghana Card – front</label><input id="gf" type="file" accept="image/*"><label>Ghana Card – back</label><input id="gb" type="file" accept="image/*">
+ <label>Live selfie check</label><button class="btn alt" id="lv" type="button">📸 Start live check</button> <span class="mu" id="sp2">Your browser will ask for camera access. Follow the on-screen prompts.</span><div class="err" id="ve"></div>
+ <button class="btn" id="sv">Submit for verification</button>`:""}
+ ${v==="pending"?`<p class="mu">An admin is reviewing your documents. You can sell as soon as you are approved.</p>`:""}
+ <h3>My listings</h3><div id="ml"></div></div>`;
+ const mine=listings().filter(l=>l.owner===me.email);
+ $("#ml").innerHTML=mine.length?mine.map(l=>`<div class="spot"><div style="flex:1"><b>${esc(l.title)}</b><div class="mu">GH₵ ${esc(l.price)}</div></div><button class="btn alt" data-s="${l.id}">${l.sold?"Relist":"Mark sold"}</button> <button class="btn alt" data-d="${l.id}">Delete</button></div>`).join(""):'<p class="mu">No listings yet.</p>';
+ $("#ml").onclick=e=>{const sd=e.target.dataset.s;if(sd){db.set("sp_listings",listings().map(l=>l.id==sd?{...l,sold:!l.sold}:l));return me_()}if(e.target.dataset.d){db.set("sp_listings",listings().filter(l=>l.id!=e.target.dataset.d));me_()}};
+ if($("#lv"))$("#lv").onclick=()=>liveness(r=>{shots=r;$("#sp2").textContent="✔ Live check complete"});
+ if($("#sv"))$("#sv").onclick=async()=>{const a=$("#gf").files[0],b=$("#gb").files[0];if(!a||!b)return $("#ve").textContent="Upload both the front and back of your Ghana Card.";if(!shots)return $("#ve").textContent="Complete the live selfie check first.";
+  const R=db.get("sp_reqs",{});R[me.email]={email:me.email,name:me.name,uni:me.uni,phone:me.phone,front:await shrink(a,800),back:await shrink(b,800),selfies:shots.shots,auto:shots.auto,at:Date.now()};db.set("sp_reqs",R);shots=null;
+  setUser({ver:"pending"});toast("Submitted! We’ll review it shortly.");me_()};
+ }
+function setUser(p){db.set("sp_users",users().map(u=>u.email===me.email?{...u,...p}:u));fresh()}
+let shots=null;
+function liveness(done){
+ const m=document.createElement("div");m.id="cam";
+ m.innerHTML='<div class="cm"><h3>Live face check</h3><div id="cb"></div><button class="btn alt" id="cc" type="button" style="margin-top:12px">Cancel</button></div>';
+ document.body.appendChild(m);
+ const B=m.querySelector("#cb");let stream,stop=false;
+ const end=()=>{stop=true;stream&&stream.getTracks().forEach(t=>t.stop());m.remove()};
+ m.querySelector("#cc").onclick=end;
+ const sleep=t=>new Promise(r=>setTimeout(r,t));
+ function guided(){
+  const G=[["Photo 1 of 3","Look straight at the camera, whole face visible"],["Photo 2 of 3","Turn your head to the LEFT, then take the photo"],["Photo 3 of 3","Turn your head to the RIGHT, then take the photo"]],out=[];
+  const step=i=>{if(i===3){end();return done({shots:out,auto:false})}
+   B.innerHTML=`<p class="mu" style="font-size:13px">The in-page camera is not available here, so we will use your device camera instead.</p><div class="prog">${G.map((_,j)=>`<i class="${j<i?"d":""}"></i>`).join("")}</div><div class="ins">${G[i][0]}<br><span class="mu">${G[i][1]}</span></div><label class="btn" style="display:inline-block;cursor:pointer">📸 Take photo<input type="file" accept="image/*" capture="user" hidden></label><div style="margin-top:10px"><button class="btn alt" id="rt" type="button">Try live camera again</button></div>`;
+   B.querySelector("input").onchange=async e=>{const f=e.target.files[0];if(!f)return;out.push(await shrink(f,360));step(i+1)};
+   B.querySelector("#rt").onclick=live};
+  step(0)}
+ async function live(){
+  B.innerHTML='<div class="vw"><video playsinline muted></video><div class="ring" id="rg"></div></div><div class="ins" id="ins">Starting camera…</div><div class="prog" id="pg"></div>';
+  const v=B.querySelector("video"),ins=B.querySelector("#ins"),rg=B.querySelector("#rg"),pg=B.querySelector("#pg");
+  let fd=null;try{if("FaceDetector" in window)fd=new FaceDetector({fastMode:true,maxDetectedFaces:1})}catch{}
+  try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw 0;stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:"user",width:640,height:480},audio:false});v.srcObject=stream;await v.play()}catch{return guided()}
+  const snap=()=>{const c=document.createElement("canvas");c.width=320;c.height=240;c.getContext("2d").drawImage(v,0,0,320,240);return c.toDataURL("image/jpeg",.65)};
+  const mc=document.createElement("canvas");mc.width=32;mc.height=24;const mx=mc.getContext("2d",{willReadFrequently:true});let prev=null;
+  const motion=()=>{mx.drawImage(v,0,0,32,24);const d=mx.getImageData(0,0,32,24).data;let s=0;if(prev)for(let k=0;k<d.length;k+=16)s+=Math.abs(d[k]-prev[k]);prev=d.slice();return s/(d.length/16)};
+  const pose=async()=>{if(!fd)return{face:true,yaw:0};
+   try{const f=(await fd.detect(v))[0];if(!f)return{face:false,yaw:0};const b=f.boundingBox;let yaw=((b.x+b.width/2)/v.videoWidth-.5)*2;
+    const L=f.landmarks||[],e=L.filter(l=>l.type==="eye"),n=L.find(l=>l.type==="nose");
+    if(e.length===2&&n){const a=e[0].locations[0].x,c=e[1].locations[0].x;yaw=(n.locations[0].x-(a+c)/2)/(Math.abs(a-c)||1)}
+    return{face:true,yaw}}catch{return{face:true,yaw:0}}};
+  const S=[["Place your face inside the circle","c"],["Slowly turn your head to the LEFT","t"],["Now slowly turn your head to the RIGHT","t"],["Look straight at the camera","c"]],out=[];let s1=0;
+  for(let i=0;i<S.length&&!stop;i++){
+   pg.innerHTML=S.map((_,j)=>'<i class="'+(j<i?"d":"")+'"></i>').join("");ins.textContent=S[i][0];
+   let ok=false,t0=Date.now(),mv=0,hold=0;
+   while(!stop&&Date.now()-t0<15000){
+    const p=await pose();if(motion()>4)mv++;
+    if(S[i][1]==="c"){hold=p.face&&Math.abs(p.yaw)<.2?hold+1:0;ok=fd?hold>=6:Date.now()-t0>2000}
+    else if(fd){if(i===1&&Math.abs(p.yaw)>.3){s1=Math.sign(p.yaw);ok=true}if(i===2&&Math.sign(p.yaw)===-s1&&Math.abs(p.yaw)>.3)ok=true}
+    else ok=Date.now()-t0>2500&&mv>=3;
+    if(ok)break;await sleep(200)}
+   if(stop)return;
+   if(!ok){ins.textContent="We could not detect that. Try again in good lighting.";rg.className="ring bad";await sleep(1800);end();toast("Live check failed, please try again");return}
+   rg.className="ring good";if(i<3)out.push(snap());await sleep(600);rg.className="ring"}
+  if(stop)return;pg.innerHTML=S.map(()=>'<i class="d"></i>').join("");ins.textContent="✔ Verified, thank you!";await sleep(900);end();done({shots:out,auto:!!fd})}
+ live()}
+const setU=(e,p)=>db.set("sp_users",users().map(u=>u.email===e?{...u,...p}:u));
+function adminV(){
+ const R=db.get("sp_reqs",{}),us=users(),P=Object.values(R).filter(r=>us.find(u=>u.email===r.email&&u.ver==="pending"));
+ const st=[["Students",us.filter(u=>u.role!=="admin").length],["Verified sellers",us.filter(u=>u.ver==="approved"&&u.role!=="admin").length],["Pending reviews",P.length],["Listings",listings().length]];
+ $("#view").innerHTML=`<div class="hero"><h1>Admin dashboard 🛡️</h1><p>Review seller verification requests. Images are private and deleted once you decide.</p></div>
+ <div class="stats">${st.map(s=>`<div class="stat"><b>${s[1]}</b>${s[0]}</div>`).join("")}</div>
+ ${P.length?P.map((r,i)=>`<div class="rq"><b>${esc(r.name)}</b> <span class="tag">${esc(r.uni)}</span><div class="mu">${esc(r.email)} · +${esc(r.phone)} · ${new Date(r.at).toLocaleString()}</div>
+ <div class="vb ${r.auto?"ok":"pen"}" style="margin:10px 0 0">${r.auto?"✔ Automatic face and head-turn check passed":"⚠ Not auto-checked. Compare the selfie(s) with the card photo carefully."}</div>
+ <div class="ims"><figure><img src="${r.front}"><figcaption>Card front</figcaption></figure><figure><img src="${r.back}"><figcaption>Card back</figcaption></figure>${r.selfies.map((s,j)=>`<figure><img src="${s}"><figcaption>Selfie ${j+1}</figcaption></figure>`).join("")}</div>
+ <input id="rs${i}" placeholder="Reason (required if rejecting)"><button class="btn" data-ap="${i}">Approve</button> <button class="btn alt" data-rj="${i}">Reject</button></div>`).join(""):'<p class="mu">No pending requests 🎉</p>'}`;
+ adsPanel();$("#view").onclick=e=>{const t=e.target;if(t.tagName==="IMG")return t.classList.toggle("big");
+  const a=t.dataset.ap,j=t.dataset.rj,k=a??j;if(k==null)return;const r=P[k];
+  if(j!=null&&!$("#rs"+k).value.trim())return toast("Add a reason to reject");
+  setU(r.email,j!=null?{ver:"rejected",reason:$("#rs"+k).value.trim()}:{ver:"approved"});
+  const all=db.get("sp_reqs",{});delete all[r.email];db.set("sp_reqs",all);toast(j!=null?"Request rejected":"Seller approved ✔");adminV()}
+}
+const ICO={
+phone:'<rect x="32" y="10" width="36" height="80" rx="7" fill="#fff"/><rect x="36" y="18" width="28" height="60" rx="3" fill="#0006"/><circle cx="50" cy="84" r="2.5" fill="#0007"/>',
+laptop:'<rect x="20" y="22" width="60" height="42" rx="4" fill="#fff"/><rect x="24" y="26" width="52" height="34" rx="2" fill="#0006"/><path d="M8 68h84l-7 9H15z" fill="#fffd"/>',
+speaker:'<rect x="26" y="14" width="48" height="72" rx="10" fill="#fff"/><circle cx="50" cy="36" r="9" fill="#0006"/><circle cx="50" cy="62" r="14" fill="#0006"/><circle cx="50" cy="62" r="5" fill="#fff8"/>',
+earbuds:'<circle cx="30" cy="34" r="13" fill="#fff"/><rect x="36" y="36" width="7" height="40" rx="3.5" fill="#fff"/><circle cx="70" cy="34" r="13" fill="#fffc"/><rect x="57" y="36" width="7" height="40" rx="3.5" fill="#fffc"/>',
+sneaker:'<path d="M10 64V46q16 0 26-14l10 8q12 8 30 12 14 3 14 12z" fill="#fff"/><rect x="8" y="64" width="86" height="10" rx="5" fill="#fffa"/><path d="M40 44l6 6m4-10l6 6" stroke="#0005" stroke-width="3"/>',
+jacket:'<path d="M34 18l16 9 16-9 24 14-9 20-9-5v38H28V47l-9 5-9-20z" fill="#fff"/><path d="M50 27v59" stroke="#0005" stroke-width="3"/>',
+book:'<rect x="22" y="14" width="56" height="72" rx="5" fill="#fff"/><rect x="22" y="14" width="10" height="72" rx="3" fill="#fffa"/><path d="M40 32h30M40 44h30M40 56h20" stroke="#0006" stroke-width="4" stroke-linecap="round"/>',
+bowl:'<path d="M14 52h72a36 30 0 0 1-72 0z" fill="#fff"/><path d="M36 40q-6-8 0-16M50 40q-6-8 0-16M64 40q-6-8 0-16" stroke="#fffb" stroke-width="4" fill="none" stroke-linecap="round"/>',
+scissors:'<circle cx="34" cy="74" r="10" fill="none" stroke="#fff" stroke-width="6"/><circle cx="66" cy="74" r="10" fill="none" stroke="#fff" stroke-width="6"/><path d="M40 66L68 16M60 66L32 16" stroke="#fff" stroke-width="6" stroke-linecap="round"/>',
+fridge:'<rect x="28" y="10" width="44" height="80" rx="6" fill="#fff"/><path d="M28 40h44" stroke="#0005" stroke-width="3"/><rect x="62" y="20" width="4" height="14" rx="2" fill="#0006"/><rect x="62" y="48" width="4" height="22" rx="2" fill="#0006"/>',
+lamp:'<path d="M32 16h36l10 32H22z" fill="#fff"/><rect x="47" y="48" width="6" height="30" fill="#fffc"/><rect x="32" y="78" width="36" height="8" rx="4" fill="#fff"/>',
+basket:'<path d="M18 42h64l-8 44H26z" fill="#fff"/><path d="M30 42q0-22 20-22t20 22" stroke="#fffb" stroke-width="5" fill="none"/><path d="M36 56v22M50 56v22M64 56v22" stroke="#0004" stroke-width="3"/>',
+doc:'<rect x="24" y="12" width="52" height="76" rx="5" fill="#fff"/><path d="M34 30h32M34 42h32M34 54h20" stroke="#0006" stroke-width="4" stroke-linecap="round"/><path d="M62 78l22-30 6 5-22 30-8 3z" fill="#fffd"/>',
+palette:'<path d="M50 12C26 12 10 30 10 52c0 22 18 36 36 36 8 0 10-6 6-12-4-6 0-12 8-12h12c12 0 18-8 18-18C90 26 74 12 50 12z" fill="#fff"/><circle cx="30" cy="46" r="6" fill="#ce1126"/><circle cx="46" cy="30" r="6" fill="#fcd116"/><circle cx="66" cy="34" r="6" fill="#18c26a"/>',
+box:'<path d="M50 12l36 18v40L50 88 14 70V30z" fill="#fff"/><path d="M14 30l36 18 36-18M50 48v40" stroke="#0005" stroke-width="3" fill="none"/>',
+pin:'<path d="M50 90S22 56 22 38a28 28 0 0 1 56 0c0 18-28 52-28 52z" fill="#fff"/><circle cx="50" cy="38" r="11" fill="#0006"/>',
+shield:'<path d="M50 10l34 12v26c0 22-14 36-34 44C30 84 16 70 16 48V22z" fill="#fff"/><path d="M34 50l12 12 22-24" stroke="#18c26a" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+chat:'<path d="M14 20h72v46H44L26 82V66H14z" fill="#fff"/><circle cx="34" cy="43" r="4.5" fill="#0006"/><circle cx="50" cy="43" r="4.5" fill="#0006"/><circle cx="66" cy="43" r="4.5" fill="#0006"/>',
+tag:'<path d="M52 12h34v34L48 84 14 50z" fill="#fff"/><circle cx="68" cy="30" r="6" fill="#0006"/>'};
+const icon=k=>`<svg viewBox="0 0 100 100" aria-hidden="true">${ICO[k]||ICO.box}</svg>`;
+const KIND={"📱":"phone","💻":"laptop","🔊":"speaker","🎧":"earbuds","👟":"sneaker","🧥":"jacket","📚":"book","🍛":"bowl","💇":"scissors","🧊":"fridge","💡":"lamp","🧺":"basket","📝":"doc","🎨":"palette"};
+const CATK={Electronics:"phone",Fashion:"jacket",Books:"book",Food:"bowl",Beauty:"scissors","Hostel items":"lamp",Services:"doc",Other:"box"};
+(()=>{const wc=t=>{const key=KIND[t[0]]||"box";const img=REAL_IMGS[key];return `<div class="wc"><div class="wi" style="background-image:url(${img})"></div><b>${esc(t[1])}</b><div><span class="price">GH₵ ${t[3]}</span> <em>✔ Verified</em></div></div>`};
+ $("#wall").innerHTML=[0,1,2,3].map(c=>{const h=TPL.filter((_,i)=>i%4===c||(i+c)%5===0).slice(0,5).map(wc).join("");return `<div class="col" style="animation-duration:${26+c*6}s;animation-direction:${c%2?"reverse":"normal"}">${h}${h}</div>`}).join("")})();
+function adMix(L){const A=db.get("sp_ads",[]),H=[["Sell your old textbooks","Verify once and post for free",150],["Need cash? Sell hostel items","List in minutes, chat on WhatsApp",30],["Meet safely on campus","Pick a mapped public spot",215]],out=L.map(card);let n=0;
+ for(let p=6;p<=out.length;p+=8){const a=A.length?A[n%A.length]:null,h=H[n%3];
+  out.splice(p,0,a?`<div class="adt" style="background-image:linear-gradient(90deg,#0b1020e6 15%,#0b102022),url(${a.img})"><span class="spn">Sponsored</span><h3>${esc(a.title)}</h3><p>${esc(a.sub||"")}</p></div>`:`<div class="adt" style="--h:${h[2]}"><span class="spn">Promo</span><h3>${h[0]}</h3><p>${h[1]}</p><div class="dec2">${icon(["tag","chat","pin"][n%3])}</div></div>`);n++}
+ return out.join("")}
+function applyBg(){const b=db.get("sp_bg","");$("#app").style.background=b?`linear-gradient(#0b1020d9,#0b1020f2),url(${b}) center/cover fixed`:""}
+function adsPanel(){
+ const A=db.get("sp_ads",[]);
+ $("#view").insertAdjacentHTML("beforeend",`<div class="rq" id="adp"><h2>📣 Advertising &amp; backgrounds</h2><p class="mu">Upload real banner images (best size 1200×500). They appear in the marketplace banner and between products.</p>
+ <input id="at" placeholder="Ad headline"><input id="as" placeholder="Short sub-text (optional)"><input id="af" type="file" accept="image/*"><button class="btn" id="aa">Add advertisement</button>
+ <div class="ims">${A.map(a=>`<figure><img src="${a.img}"><figcaption>${esc(a.title)}<br><button class="btn alt" style="padding:4px 10px;margin-top:4px" data-da="${a.id}">Remove</button></figcaption></figure>`).join("")}</div>
+ <b>Marketplace background photo</b><input id="bf" type="file" accept="image/*" style="margin-top:8px"><button class="btn alt" id="ba">Set background</button> <button class="btn alt" id="bc">Clear</button></div>`);
+ $("#adp").onclick=e=>{const d=e.target.dataset.da;if(d){db.set("sp_ads",db.get("sp_ads",[]).filter(a=>String(a.id)!==d));toast("Ad removed");adminV()}};
+ $("#aa").onclick=async()=>{const f=$("#af").files[0],t=$("#at").value.trim();if(!f||!t)return toast("Add a headline and an image");db.set("sp_ads",[...db.get("sp_ads",[]),{id:Date.now(),title:t,sub:$("#as").value.trim(),img:await shrink(f,1100)}]);toast("Advertisement added");adminV()};
+ $("#ba").onclick=async()=>{const f=$("#bf").files[0];if(!f)return toast("Choose an image first");db.set("sp_bg",await shrink(f,1400));applyBg();toast("Background updated")};
+ $("#bc").onclick=()=>{db.set("sp_bg","");applyBg();toast("Background cleared")}}
+$("#cap").innerHTML=[`<div class="c" style="--d:0s">${icon("pin")}<div><h2>Buy &amp; sell on your campus</h2><p>Only students from your own university.</p></div></div>`,`<div class="c" style="--d:5s">${icon("chat")}<div><h2>Chat directly on WhatsApp</h2><p>One tap and you are talking to the seller.</p></div></div>`,`<div class="c" style="--d:10s">${icon("pin")}<div><h2>Meet at safe, mapped spots</h2><p>Google Maps directions to trusted public places.</p></div></div>`,`<div class="c" style="--d:15s">${icon("shield")}<div><h2>Verified student sellers</h2><p>Ghana Card and live face check, kept private.</p></div></div>`].join("");
+if(me&&fresh())start(me.email);
+</script></body></html>
