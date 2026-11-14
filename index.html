@@ -451,8 +451,7 @@ $("#cap").innerHTML=[`<div class="c" style="--d:0s">${icon("pin")}<div><h2>Buy &
 if(me&&fresh())start(me.email);
 </script>
  <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDn3E2BZ1incNsVs4jmTwlsCO0cbpWVqSY",
@@ -465,8 +464,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-window.db = db;
+window._fdb = getFirestore(app);
+window._ftools = { doc, setDoc, getDoc };
 console.log("STUTPAY connected to Firebase!");
 </script>
 </body></html>
