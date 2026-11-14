@@ -450,4 +450,24 @@ function adsPanel(){
  $("#bc").onclick=()=>{db.set("sp_bg","");applyBg();toast("Background cleared")}}
 $("#cap").innerHTML=[`<div class="c" style="--d:0s">${icon("pin")}<div><h2>Buy &amp; sell on your campus</h2><p>Only students from your own university.</p></div></div>`,`<div class="c" style="--d:5s">${icon("chat")}<div><h2>Chat directly on WhatsApp</h2><p>One tap and you are talking to the seller.</p></div></div>`,`<div class="c" style="--d:10s">${icon("pin")}<div><h2>Meet at safe, mapped spots</h2><p>Google Maps directions to trusted public places.</p></div></div>`,`<div class="c" style="--d:15s">${icon("shield")}<div><h2>Verified student sellers</h2><p>Ghana Card and live face check, kept private.</p></div></div>`].join("");
 if(me&&fresh())start(me.email);
-</script></body></html>
+</script>
+ <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDn3E2BZ1incNsVs4jmTwlsCO0cbpWVqSY",
+  authDomain: "stutpay.firebaseapp.com",
+  projectId: "stutpay",
+  storageBucket: "stutpay.firebasestorage.app",
+  messagingSenderId: "273851656919",
+  appId: "1:273851656919:web:47d331f0bcd89989479e92",
+  measurementId: "G-5NJ8Y3WVEM"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.db = db;
+console.log("STUTPAY connected to Firebase!");
+</script>
+</body></html>
