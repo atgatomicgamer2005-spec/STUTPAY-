@@ -228,7 +228,7 @@ const visible=()=>listings().filter(l=>l.uni===me.uni&&(SAMPLES||!l.demo));
 const photos=l=>l.imgs&&l.imgs.length?l.imgs:(l.img?[l.img]:[]);
 const art=l=>{const key=KIND[l.emoji]||CATK[l.cat]||"box";const img=REAL_IMGS[key]||REAL_IMGS.box;return `<div class="art" style="background-image:url(${img})"><span class="real-badge">REAL PHOTO</span></div>`};
 const pic=l=>photos(l)[0]?`<div class="art" style="background-image:url(${photos(l)[0]})"></div>`:art(l);
-const favs=()=>db.get("sp_fav_"+me.email,[]);
+const favs=()=>(db.get("sp_fav_"+me.email,[])||[]);
 const toggleFav=id=>{const f=favs();db.set("sp_fav_"+me.email,f.includes(id)?f.filter(x=>x!==id):[...f,id])};
 const chat=l=>l.demo?'<button class="btn wa" style="width:100%" data-demo>💬 Chat on WhatsApp</button>':`<a href="${wa(l)}" target="_blank" rel="noopener"><button class="btn wa" style="width:100%">💬 Chat on WhatsApp</button></a>`;
 function card(i){const f=(favs()||[]).includes(i.id);const pc=i.photos?i.photos.length:0;const p=i.photos&&i.photos[0]?i.photos[0]:"";let d=i.seller||"STUTPAY";let s=i.seller||"";let v=i.verified?1:0;let t=new Date(i.date||Date.now());let ago="now";let diff=Date.now()-t;if(diff>864e5){ago=Math.floor(diff/864e5)+"d ago";}else if(diff>36e5){ago=Math.floor(diff/36e5)+"h ago";}else if(diff>6e4){ago=Math.floor(diff/6e4)+"m ago";} <div class="cb"><span class="tag">${esc(l.cat)}</span>${l.cond?`<span class="tag">${esc(l.cond)}</span>`:""}<h3>${esc(l.title)}</h3><div class="price">GH₵ ${esc(l.price)}</div>
